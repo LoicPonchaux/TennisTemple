@@ -1,7 +1,10 @@
+#!/usr/bin/python3
+
+
 from cx_Freeze import setup, Executable
 base = None
 executables = [Executable("main.py", base=base)]
-packages = []
+packages = ["idna"]
 options = {
     'build_exe': {
         'packages':packages,
