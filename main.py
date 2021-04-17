@@ -2,36 +2,41 @@
 
 from bs4 import BeautifulSoup  # import de bs4.BeautifulSoup
 from urllib import request  # import de urllib.request
+from lien import Lien
 
 
 def main():  # fonction principale
-    jour = input("Saisir la date (Format AAAA-MM-JJ)\n")
-    nb = input("Saisir le nombre de page dans le journalier\n")
+
+    tab = scenario()
+    manuel = input("Saisir manuellement les personnes (y or n)\n")
+    if (manuel == "y"):
+        recherche_manuel(tab)
+    if (manuel == 'n'):
+        recherche_automatique(tab)
+
+
+def recherche_manuel(tab):
     personne_check = "Debut"
-    fichier = open("data.txt", "r")
-
-
     while (personne_check != "Fin"):
         valfin = -1
         personne_check = input("Saisir la personne rechercher (Mettre Fin pour quitter)\n")
         if personne_check != "Fin":
-            for i in range(0, int(nb)):
+            for i in range(0, int(len(tab))):
                 if valfin != 1:
-                    soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
-                        i))  #
+                    soup = get_parsed_page(tab[i])
                     valfin = print_post_personnes(soup, personne_check)
+
+def recherche_automatique(tab):
+    fichier = open("data.txt", "r")
     for ligne in fichier:
         valfin = -1
         field = ligne.split(",")
 
         personne_check = field[0]
 
-        for y in range(0, int(nb)):
+        for i in range(0, int(len(tab))):
             if valfin != 1:
-                soup = get_parsed_page(
-                    "https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
-                        y))  #
-                # valfin = print_post_personnes(soup, personne_check)
+                soup = get_parsed_page(tab[i])
                 valfin = print_post_personnes(soup, personne_check)
     fichier.close()
 
@@ -49,19 +54,34 @@ def print_post_personnes(soup, personne_check):
 
     if (len(personnes) != 1):
         for i in range(0, len(personnes)):
-            if (personnes[i].getText().strip().upper() != '' and personnes[i].getText().strip().upper() == personne_check.upper()):
+            if (personnes[i].getText().strip().upper() != '' and personnes[
+                i].getText().strip().upper() == personne_check.upper()):
                 fichieres = open("datares.csv", "a")
                 print(personnes[i].getText().strip() + " : " + points[i].getText().strip() + " " + pourcentage[
                     i].getText().strip())
                 fichieres.write(personnes[i].getText().strip() + "," + points[i].getText().strip() + "," + pourcentage[
-                    i].getText().strip()+"\n")
+                    i].getText().strip() + "\n")
                 fichieres.close()
                 return 1
     return 0
 
 
+def scenario():
+    type = input("Saisir J pour le score journalier/H pour le score hebdo (J par défaut)\n")
+    lien = Lien()
+    if (type == "H"):
+        jour = input("Saisir la date (Format AAAA-MM)\n")
+        nb = input("Saisir le nombre de page dans l'hebdo\n")
+        lien.add_nombre_de_page(nb)
+        lien.add_date_semaine(jour)
+    else:
+        semaine = input("Saisir la date (Format AAAA-MM-JJ)\n")
+        nb = input("Saisir le nombre de page dans le journalier\n")
+        lien.add_nombre_de_page(nb)
+        lien.add_date_journalier(semaine)
+    return lien.get_liens(type)
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
