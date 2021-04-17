@@ -1,9 +1,5 @@
 #!/usr/bin/python3
 
-from bs4 import BeautifulSoup  # import de bs4.BeautifulSoup
-from urllib import request  # import de urllib.request
-
-
 # Class permettant la composition du lien à chercher
 
 class Lien():
@@ -21,7 +17,7 @@ class Lien():
     def get_nb_page(self):
         return self.nb_page
 
-    def add_date_jouralier(self, date):
+    def add_date_journalier(self, date):
         self.date_jour = date
 
     def add_date_semaine(self, date):
@@ -35,10 +31,10 @@ class Lien():
 
     def get_liens(self, type):
         tab = []
-        if (type == "J"):
-            for i in range(self.nb_page):
-                tab.append(self.recuperation_lien_journalier() + "/" + str(i + 1))
-        if (type == "H"):
-            for i in range(self.nb_page):
-                tab.append(self.recuperation_lien_hebdo() + "/" + str(i + 1))
+        if (str(type) == "J"):
+            for i in range(int(self.nb_page)):
+                tab.append(self.get_lien_journalier() + "/" + str(i + 1))
+        if (str(type) == "H"):
+            for i in range(int(self.nb_page)):
+                tab.append(self.get_lien_hebdo() + "/" + str(i + 1))
         return (tab)

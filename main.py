@@ -2,13 +2,12 @@
 
 from bs4 import BeautifulSoup  # import de bs4.BeautifulSoup
 from urllib import request  # import de urllib.request
-
+from lien import Lien
 
 def main():  # fonction principale
-    jour = input("Saisir la date (Format AAAA-MM-JJ)\n")
+
+    tab = scenario()
     manuel = input("Saisir manuellement les personnes (y or n)\n")
-    nb = input("Saisir le nombre de page dans le journalier\n")
-    if (manuel=="n"):
 
     personne_check = "Debut"
     fichier = open("data.txt", "r")
@@ -20,10 +19,7 @@ def main():  # fonction principale
         if personne_check != "Fin":
             for i in range(0, int(nb)):
                 if valfin != 1:
-                    #soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
-                      #  i))
-                    soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/" + jour + "/" + str(
-                        i))  #
+                    soup = get_parsed_page(tab[i])
                     valfin = print_post_personnes(soup, personne_check)
     for ligne in fichier:
         valfin = -1
@@ -33,12 +29,8 @@ def main():  # fonction principale
 
         for y in range(0, int(nb)):
             if valfin != 1:
-                #soup = get_parsed_page(
-                 #   "https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
-                  #      y))  #
                 soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/" + jour + "/" + str(
                     i))  #
-                # valfin = print_post_personnes(soup, personne_check)
                 valfin = print_post_personnes(soup, personne_check)
     fichier.close()
 
@@ -66,9 +58,21 @@ def print_post_personnes(soup, personne_check):
                 return 1
     return 0
 
+def scenario():
+    type = input("Saisir J pour le score journalier/H pour le score hebdo (J par défaut)\n")
+    lien = Lien()
+    if (type == "H"):
+        jour = input("Saisir la date (Format AAAA-MM)\n")
+        nb = input("Saisir le nombre de page dans l'hebdo\n")
+        lien.add_nombre_de_page(nb)
+        lien.add_date_semaine(jour)
+    else:
+        semaine = input("Saisir la date (Format AAAA-MM-JJ)\n")
+        nb = input("Saisir le nombre de page dans le journalier\n")
+        lien.add_nombre_de_page(nb)
+        lien.add_date_journalier(semaine)
+    return lien.get_liens(type)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
