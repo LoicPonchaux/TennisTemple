@@ -11,7 +11,7 @@ def main():  # fonction principale
     manuel = input("Saisir manuellement les personnes (y or n)\n")
     if (manuel == "y"):
         recherche_manuel(tab)
-    if (manuel == 'n'):
+    if (manuel == "n"):
         recherche_automatique(tab)
 
 
@@ -70,15 +70,15 @@ def scenario():
     type = input("Saisir J pour le score journalier/H pour le score hebdo (J par défaut)\n")
     lien = Lien()
     if (type == "H"):
-        jour = input("Saisir la date (Format AAAA-MM)\n")
+        semaine = input("Saisir la date (Format MM-AAAA)\n")
         nb = input("Saisir le nombre de page dans l'hebdo\n")
         lien.add_nombre_de_page(nb)
-        lien.add_date_semaine(jour)
+        lien.add_date_semaine(semaine)
     else:
-        semaine = input("Saisir la date (Format AAAA-MM-JJ)\n")
+        jour = input("Saisir la date (Format AAAA-MM-JJ)\n")
         nb = input("Saisir le nombre de page dans le journalier\n")
         lien.add_nombre_de_page(nb)
-        lien.add_date_journalier(semaine)
+        lien.add_date_journalier(jour)
     return lien.get_liens(type)
 
 
