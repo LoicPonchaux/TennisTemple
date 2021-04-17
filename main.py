@@ -17,7 +17,9 @@ def main():  # fonction principale
         if personne_check != "Fin":
             for i in range(0, int(nb)):
                 if valfin != 1:
-                    soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
+                    #soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
+                      #  i))
+                    soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/" + jour + "/" + str(
                         i))  #
                     valfin = print_post_personnes(soup, personne_check)
     for ligne in fichier:
@@ -28,9 +30,11 @@ def main():  # fonction principale
 
         for y in range(0, int(nb)):
             if valfin != 1:
-                soup = get_parsed_page(
-                    "https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
-                        y))  #
+                #soup = get_parsed_page(
+                 #   "https://fr.tennistemple.com/pronostics/classement/jour/" + jour + "/" + str(
+                  #      y))  #
+                soup = get_parsed_page("https://fr.tennistemple.com/pronostics/classement/" + jour + "/" + str(
+                    i))  #
                 # valfin = print_post_personnes(soup, personne_check)
                 valfin = print_post_personnes(soup, personne_check)
     fichier.close()
