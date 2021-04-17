@@ -6,7 +6,10 @@ from urllib import request  # import de urllib.request
 
 def main():  # fonction principale
     jour = input("Saisir la date (Format AAAA-MM-JJ)\n")
+    manuel = input("Saisir manuellement les personnes (y or n)\n")
     nb = input("Saisir le nombre de page dans le journalier\n")
+    if (manuel=="n"):
+
     personne_check = "Debut"
     fichier = open("data.txt", "r")
 
